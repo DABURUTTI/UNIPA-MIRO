@@ -1,5 +1,6 @@
 require 'selenium-webdriver'
 require 'nokogiri'
+require 'io/console'
 
 @wait_time = 3
 @timeout = 4
@@ -10,9 +11,10 @@ USERID = gets.chomp
 
 puts "パスワードを入力"
 
-PASSWORD = STDIN.noecho(&:gets)
+PASSWORD = STDIN.noecho(&:gets).chomp
 
-puts "ユーザーIDとパスワードでログイン中"
+begin
+    puts "ユーザーIDとパスワードでログイン中"
 
 options = Selenium::WebDriver::Chrome::Options.new
 options.add_argument('--headless')
@@ -40,7 +42,7 @@ search_btn.click
 #sleep(1)
 all_btn = driver.find_element(:xpath, '//*[@id="funcForm:tabArea"]/ul/li[3]')
 all_btn.click
-
+puts "ログインに成功しました"
 puts "タスク１を実行"
 
 #タブ切り替え
@@ -86,3 +88,7 @@ end
 puts "完了 [#{m}件]"
 
 driver.quit
+
+rescue => exception
+    puts "ログインに失敗しました"
+end
