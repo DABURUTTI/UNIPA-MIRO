@@ -1,6 +1,9 @@
 require 'selenium-webdriver'
 require 'nokogiri'
 require 'io/console'
+require 'rmagick'
+require 'json'
+require 'twitter'
 
 @wait_time = 3
 @timeout = 4
@@ -29,6 +32,8 @@ wait = Selenium::WebDriver::Wait.new(timeout: @wait_time)
 driver.get('https://portal.sa.dendai.ac.jp/uprx/')
 
 puts "接続中"
+
+
 
 search_box = driver.find_element(:id, 'loginForm:userId')
 search_box2 = driver.find_element(:id, 'loginForm:password')
@@ -92,3 +97,4 @@ driver.quit
 rescue => exception
     puts "ログインに失敗しました"
 end
+
