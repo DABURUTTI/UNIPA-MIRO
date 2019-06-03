@@ -4,8 +4,13 @@ require 'nokogiri'
 @wait_time = 3
 @timeout = 4
 
+puts "学籍番号を入力"
+
 USERID = gets.chomp
-PASSWORD = gets.chomp
+
+puts "パスワードを入力"
+
+PASSWORD = STDIN.noecho(&:gets)
 
 puts "ユーザーIDとパスワードでログイン中"
 
