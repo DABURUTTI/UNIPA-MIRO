@@ -1,0 +1,4 @@
+# Logfile created on 2019-06-03 00:28:59 +0900 by logger.rb/56438
+2019-06-03 10:07:35 WARN Selenium [DEPRECATION] Selenium::WebDriver::Error::ElementNotVisibleError is deprecated. Use Selenium::WebDriver::Error::ElementNotInteractableError (ensure the driver supports W3C WebDriver specification) instead.
+2019-06-03 10:09:30 WARN Selenium [DEPRECATION] Selenium::WebDriver::Error::ElementNotVisibleError is deprecated. Use Selenium::WebDriver::Error::ElementNotInteractableError (ensure the driver supports W3C WebDriver specification) instead.
+2019-06-03 10:16:16 WARN Selenium [DEPRECATION] Selenium::WebDriver::Error::ElementNotVisibleError is deprecated. Use Selenium::WebDriver::Error::ElementNotInteractableError (ensure the driver supports W3C WebDriver specification) instead.
