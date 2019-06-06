@@ -10,11 +10,15 @@ require 'twitter'
 
 puts "学籍番号を入力"
 
-USERID = gets.chomp
+#USERID = gets.chomp
+
+USERID = ''
 
 puts "パスワードを入力"
 
-PASSWORD = STDIN.noecho(&:gets).chomp
+#PASSWORD = STDIN.noecho(&:gets).chomp
+
+PASSWORD = ""
 
 begin
     puts "ユーザーIDとパスワードでログイン中"
@@ -81,11 +85,16 @@ target = Nokogiri::HTML.parse(target.to_s)
 
 puts "更新を待機中"
 
+#三次元配列を初期化
+@database = Hash.new { |hash, key| hash[key] = Hash.new{ |hash, key| hash[key] = Hash.new{} } }
+
 target.xpath('//*[@id="keiji"]').each do |keiji|
 
     m = m + 1
-    puts "No.#{m}: #{keiji.xpath('.//a').text}"
 
+    maintarget = Nokogiri::HTML.parse(keiji.to_s)
+    puts "No.#{m}: #{keiji.xpath('.//a').text} : #{maintarget.xpath('//*[@id="keiji"]/text()').text.to_s.chomp!}"
+    #puts keiji.xpath('//*[@id="keiji"]/text()').text
     sleep(0.03)
 
 end
