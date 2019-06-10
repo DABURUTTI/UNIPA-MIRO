@@ -4,9 +4,19 @@ require 'io/console'
 require 'rmagick'
 require 'json'
 require 'twitter'
+require "securerandom"
 
 @wait_time = 3
 @timeout = 4
+
+#三次元配列を初期化
+@database = Hash.new { |hash, key| hash[key] = Hash.new{ |hash, key| hash[key] = Hash.new{} } }
+
+File.open("./test.json" , "r") do |text|
+    @database = JSON.parse(text.read.to_s, symbolize_names: true)
+end
+
+m = @database.length
 
 puts "学籍番号を入力"
 
@@ -20,11 +30,11 @@ puts "パスワードを入力"
 
 PASSWORD = ""
 
-begin
-    puts "ユーザーIDとパスワードでログイン中"
+
+puts "ユーザーIDとパスワードでログイン中"
 
 options = Selenium::WebDriver::Chrome::Options.new
-options.add_argument('--headless')
+#options.add_argument('--headless')
 driver = Selenium::WebDriver.for :chrome, options: options
 
 Selenium::WebDriver.logger.output = File.join("./", "selenium.log")
@@ -36,7 +46,6 @@ wait = Selenium::WebDriver::Wait.new(timeout: @wait_time)
 driver.get('https://portal.sa.dendai.ac.jp/uprx/')
 
 puts "接続中"
-
 
 
 search_box = driver.find_element(:id, 'loginForm:userId')
@@ -57,18 +66,18 @@ puts "タスク１を実行"
 #タブ切り替え
 
 #軽視開始順に切り替え
-sleep(1)
+#sleep(1)
 all_btn = driver.find_element(:xpath, '//*[@id="funcForm:tabArea:2:order:j_idt332:0:j_idt334"]/div[3]')
 all_btn.click
 
 all_btn = driver.find_element(:xpath, '//*[@id="funcForm:tabArea:2:order:j_idt332:0:j_idt334_panel"]/div/ul/li[1]')
 all_btn.click
 
-sleep(1)
+#sleep(1)
 all_btn = driver.find_element(:xpath, '//*[@id="funcForm:tabArea:2:j_idt347"]/div[2]')
 all_btn.click
 
-sleep(3)
+#sleep(3)
 all_btn = driver.find_element(:xpath, '//*[@id="funcForm:tabArea:2:j_idt399"]/span')
 all_btn.click
 
@@ -78,32 +87,39 @@ puts "タスク２を実行"
 sleep(3)
 doc = Nokogiri::HTML.parse(driver.page_source)
 
-m = 0
-
 target = doc.xpath ('//*[@id="funcForm:tabArea:1:allScr"]')
 target = Nokogiri::HTML.parse(target.to_s)
 
 puts "更新を待機中"
 
-#三次元配列を初期化
-@database = Hash.new { |hash, key| hash[key] = Hash.new{ |hash, key| hash[key] = Hash.new{} } }
-
 target.xpath('//*[@id="keiji"]').each do |keiji|
 
+    puts m
     m = m + 1
 
     maintarget = Nokogiri::HTML.parse(keiji.to_s)
-    puts "No.#{m}: #{keiji.xpath('.//a').text} : #{maintarget.xpath('//*[@id="keiji"]/text()').text.to_s.chomp!}"
-    #puts keiji.xpath('//*[@id="keiji"]/text()').text
-    sleep(0.03)
+    #puts "No.#{m} : #{keiji.xpath('.//a').text.chomp} - #{maintarget.xpath('//*[@id="keiji"]/text()').text.chomp.gsub(" ", "").gsub("\n", "")} "
+
+    @database.store(m.to_s,{"title":keiji.xpath('.//a').text.chomp,"data":maintarget.xpath('//*[@id="keiji"]/text()').text.chomp.gsub(" ", "").gsub("\n", ""),"status":0,"type":"class"})
 
 end
+
+
+file = File.open('test.json', "w")
+
+file.puts @database.to_json
+
+#puts @database.to_json
+
+file = File.open('test.json', "w")
+
+file.puts @database.to_json
+
 
 puts "完了 [#{m}件]"
 
+
+
 driver.quit
 
-rescue => exception
-    puts "ログインに失敗しました"
-end
 
