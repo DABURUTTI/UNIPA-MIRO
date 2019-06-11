@@ -25,13 +25,13 @@ end
 
 num = @database.length
 
-puts "学籍番号を入力"
+#puts "学籍番号を入力"
 
 #USERID = gets.chomp
 
 USERID = ''
 
-puts "パスワードを入力"
+#puts "パスワードを入力"
 
 #PASSWORD = STDIN.noecho(&:gets).chomp
 
@@ -122,7 +122,7 @@ target.xpath('//*[@id="keiji"]').each do |keiji|
     end
 
     num = num + 1
-    @database.store(num.to_s,{"title":keiji.xpath('.//a').text.chomp,"data":maintarget.xpath('//*[@id="keiji"]/text()').text.chomp.gsub(" ", "").gsub("\n", ""),"status":1,"type":"class"})
+    @database.store(num.to_s,{"title":keiji.xpath('.//a').text.chomp,"data":maintarget.xpath('//*[@id="keiji"]/text()').text.chomp.gsub(" ", "").gsub("\n", ""),"status":0,"type":"class"})
 
 end
 puts "完了 [#{num}件]"
@@ -151,7 +151,7 @@ target2.xpath('//*[@id="keiji"]').each do |keiji2|
     end
 
     num = num + 1
-    @database.store(num.to_s,{"title":keiji2.xpath('.//a').text.chomp,"data":maintarget2.xpath('//*[@id="keiji"]/text()').text.chomp.gsub(" ", "").gsub("\n", ""),"status":1,"type":"ALL"})
+    @database.store(num.to_s,{"title":keiji2.xpath('.//a').text.chomp,"data":maintarget2.xpath('//*[@id="keiji"]/text()').text.chomp.gsub(" ", "").gsub("\n", ""),"status":0,"type":"ALL"})
 
 end
 
@@ -192,7 +192,7 @@ def tweet(str_title,str_data,str_type)
         self.gravity   = Magick::NorthWestGravity
     end
 
-    img.display
+    #img.display
     img.write("./tweet.png")
     image = []
     image << File.new('./tweet.png')
