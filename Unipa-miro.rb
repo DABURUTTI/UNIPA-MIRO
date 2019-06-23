@@ -29,13 +29,13 @@ num = @database.length
 
 #USERID = gets.chomp
 
-USERID = '19fi019'
+USERID = ''
 
 #puts "パスワードを入力"
 
 #PASSWORD = STDIN.noecho(&:gets).chomp
 
-PASSWORD = "Yuki1002109!"
+PASSWORD = ""
 
 
 puts "ユーザーIDとパスワードでログイン中"
