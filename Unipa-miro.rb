@@ -16,7 +16,7 @@ require "securerandom"
     config.access_token_secret = ""
 end
 
-#三次元配列を初期化
+#三次元配列を初期化`
 @database = Hash.new { |hash, key| hash[key] = Hash.new{ |hash, key| hash[key] = Hash.new{} } }
 
 File.open("./test.json" , "r") do |text|
@@ -29,30 +29,30 @@ num = @database.length
 
 #USERID = gets.chomp
 
-USERID = ''
+USERID = '19fi019'
 
 #puts "パスワードを入力"
 
 #PASSWORD = STDIN.noecho(&:gets).chomp
 
-PASSWORD = ""
+PASSWORD = "Yuki1002109!"
 
 
 puts "ユーザーIDとパスワードでログイン中"
-
 options = Selenium::WebDriver::Chrome::Options.new
 options.add_argument('--headless')
 driver = Selenium::WebDriver.for :chrome, options: options
 
 Selenium::WebDriver.logger.output = File.join("./", "selenium.log")
 Selenium::WebDriver.logger.level = :warn
-
+#Selenium::WebDriver::Chrome::Binary.path = '/usr/local/bin/chromedriver'
 driver.manage.timeouts.implicit_wait = @timeout
 wait = Selenium::WebDriver::Wait.new(timeout: @wait_time)
 
 driver.get('https://portal.sa.dendai.ac.jp/uprx/')
 
 puts "接続中"
+
 
 
 search_box = driver.find_element(:id, 'loginForm:userId')
@@ -67,6 +67,11 @@ search_btn.click
 #sleep(1)
 all_btn = driver.find_element(:xpath, '//*[@id="funcForm:tabArea"]/ul/li[3]')
 all_btn.click
+
+all_btn = driver.find_element(:xpath, '//*[@id="funcForm:tabArea"]/ul/li[3]')
+all_btn.click
+
+
 puts "ログインに成功しました"
 puts "タスク１を実行"
 
@@ -78,7 +83,7 @@ def cheak(str_title,str_data)
     @database.each do |target|
         if target[1][:title] == str_title then
             if target[1][:data] == str_data then
-                puts "[スキップ]:#{target[1][:title]} : #{target[1][:data]}"
+#             puts "[スキップ]:#{target[1][:title]} : #{target[1][:data]}"
                 return true
             end
         end
@@ -89,6 +94,10 @@ end
 
 #軽視開始順に切り替え
 #sleep(1)
+sleep(1)
+all_btn = driver.find_element(:xpath, '//*[@id="funcForm:tabArea:2:j_idt347"]/div[2]')
+all_btn.click
+
 all_btn = driver.find_element(:xpath, '//*[@id="funcForm:tabArea:2:order:j_idt332:0:j_idt334"]/div[3]')
 all_btn.click
 
@@ -116,7 +125,7 @@ puts "更新を待機中"
 target.xpath('//*[@id="keiji"]').each do |keiji|
 
     maintarget = Nokogiri::HTML.parse(keiji.to_s)
-    puts keiji.xpath('.//a').text.chomp
+#    puts keiji.xpath('.//a').text.chomp
     if cheak(keiji.xpath('.//a').text.chomp,maintarget.xpath('//*[@id="keiji"]/text()').text.chomp.gsub(" ", "").gsub("\n", "")) then
         next
     end
@@ -145,7 +154,7 @@ puts "更新を待機中"
 target2.xpath('//*[@id="keiji"]').each do |keiji2|
 
     maintarget2 = Nokogiri::HTML.parse(keiji2.to_s)
-    puts keiji2.xpath('.//a').text.chomp
+#    puts keiji2.xpath('.//a').text.chomp
     if cheak(keiji2.xpath('.//a').text.chomp,maintarget2.xpath('//*[@id="keiji"]/text()').text.chomp.gsub(" ", "").gsub("\n", "")) then
         next
     end
